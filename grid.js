@@ -143,7 +143,7 @@ function calculateFillStyle(x){
         return "#8cc665";
     else if(x == 3)
         return "#44a340";
-    else if(x == 4)
+    else
         return "#1e6823";
 }
 
@@ -162,6 +162,65 @@ function clickGrid(event){
     dragging = false;
     lastRow = lastCol = -1;
 }
+
+function loadBoardFromImageCanvas(c)
+{
+    var imgd = c.getImageData(0, 0, cols, rows);
+    var pix = imgd.data;
+//    console.log(imgd);
+    
+    for (var x=0; x<rows; x++)
+        for (var y=0; y<cols; y++)
+        {
+            var cur = 4*(x*cols+y);
+//            console.log(cur);
+            var r = pix[cur];
+            var g = pix[cur+1];
+            var b = pix[cur+2];
+            var alpha = pix[cur+3];
+            
+            var grayscale = (r+g+b)/3;
+            
+            // apply the transparency to the grayscale
+//            grayscale = ((255-alpha)/255)*grayscale;
+            
+            var value = parseInt((grayscale/255)*5);
+//            console.log(value);
+            grid[x][y] = (value==0)? 4 : 5-value;
+        }
+    
+    writeGridToTextarea();
+    drawBoard();
+    
+}
+
+function readURL(input) {
+    
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = function (e) {
+            $('#blah').attr('src', e.target.result);
+            
+            var canvas2 = document.getElementById('imageprev');
+            canvas2.width = cols;
+            canvas2.height = rows;
+            
+            var context = canvas2.getContext('2d');
+            var image = document.getElementById('blah');
+            context.drawImage(image, 0, 0, cols, rows);
+            
+            loadBoardFromImageCanvas(context);
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+        
+    }
+}
+
+$("#imgInp").change(function(){
+                    readURL(this);
+                    });
 
 canvas.on("click", clickGrid);
 canvas.on("mousedown", function(){dragging = true;});
