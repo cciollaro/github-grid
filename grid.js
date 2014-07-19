@@ -9,6 +9,9 @@ var ss = parseInt($('input[name="ss"]').val());
 var bw = ss*cols;
 var bh = ss*rows;
 
+var dragging = false;
+var lastRow = lastCol = -1;
+
 //size of canvas
 var cw = bw + 1;
 var ch = bh + 1;
@@ -86,11 +89,15 @@ function drawBoard(){
 }
 
 function updateGrid(event){
+    
+    if (!dragging)
+        return;
+    
     var totalOffsetX = 0;
     var totalOffsetY = 0;
     var canvasX = 0;
     var canvasY = 0;
-    var currentElement = this;
+    var currentElement = document.getElementById("canvas");
     
     do{
         totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
@@ -103,6 +110,12 @@ function updateGrid(event){
     
     var clickedRow = parseInt(canvasY/ss);
     var clickedCol = parseInt(canvasX/ss);
+    
+    if (clickedRow == lastRow && clickedCol == lastCol)
+        return;
+    
+    lastCol = clickedCol;
+    lastRow = clickedRow;
     
     grid[clickedRow][clickedCol] = (grid[clickedRow][clickedCol] + 1) % states;
     writeGridToTextarea();
@@ -133,7 +146,28 @@ function calculateFillStyle(x){
     else if(x == 4)
         return "#1e6823";
 }
-canvas.on("click", updateGrid);
-canvas.on("mousedown", function(){return false;});
+
+// there is probably a neater way to do this... makes sure that
+// when the drag event click event fires after a drag the cell doesn't
+// fill in twice
+function clickGrid(event){
+    if (lastRow != -1 && lastCol != -1)
+    {
+        lastRow = lastCol = -1;
+        return;
+    }
+    lastRow = lastCol = -1;
+    dragging = true;
+    updateGrid(event);
+    dragging = false;
+    lastRow = lastCol = -1;
+}
+
+canvas.on("click", clickGrid);
+canvas.on("mousedown", function(){dragging = true;});
+canvas.on("mouseup", function(){dragging = false;});
+canvas.on("mousemove", updateGrid);
+
+//canvas.on("mousedown", function(){return false;});
 $('input').on("change input", doItAll);
 doItAll();

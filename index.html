@@ -1,17 +1,39 @@
 <html>
 	<head>
-        <title>Github Commit Image Generator</title>
+        <title>Github Swagifyer</title>
         <link href="style.css" rel="stylesheet" />
+        <link href='//fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 	</head>
 
 	<body>
-		<label for="cols">Columns: </label><input name="cols" type="number" value="50" />
-		<label for="rows">Rows: </label><input name="rows" type="number" value="7" />
-		<label for="ss">Square Size: </label><input name="ss" type="number" value="15" />
+        <div id="content">
+            <h1>Github Swagifyer</h1>
+            <canvas id="canvas"></canvas>
+            <br />
+            <button onclick="$('.debug').toggle()">Toggle Debug</button>
+            <button onclick="uploadImage()">Upload Image</button>
+            <button onclick="alert('noop')">Export as Script</button>
+            <br />
+            
+            <div id="description">
+                <br />
+                Use this tool to generate a custom display image for a Github Project page.<br /><br />
+                Click or drag the mouse in the above image to draw a "commit history" that will be exported as a series of commits with varying throughout the past year timestamps.<br /><br />
+                If, for some <i>bizarre</i> reason, you aren't able to create an appealing image using just your mouse, you can also try your luck by using the "Upload Image" button above.
+                <br />&nbsp;
+            </div>
+        
+        <div class="debug">
+            <label for="cols">Columns: </label><input name="cols" type="number" value="50" />
+            <label for="rows">Rows: </label><input name="rows" type="number" value="7" />
+            <label for="ss">Square Size: </label><input name="ss" type="number" value="15" />
+            <textarea class="debug" name="result" wrap="hard"></textarea>
+            <br />&nbsp;
+        </div>
+        
+        </div>
 		
-		<br /><br /><canvas id="canvas"></canvas>
-		
-		<br /><textarea name="result" wrap="hard"></textarea>
+        
 		
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script src="grid.js"></script>
