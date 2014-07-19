@@ -1,0 +1,13 @@
+body {
+    background: lightblue;
+    padding: 10px;
+}
+
+canvas {
+    background: #fff;
+}
+
+textarea {
+  font-family: Courier New;
+    font-size: 95%;
+}
