@@ -218,6 +218,73 @@ function readURL(input) {
     }
 }
 
+function exportScript()
+{
+    var cur = new Date(); // set date to today
+    var day = cur.getDay();
+    
+    // go to sunday
+    cur.setHours((day != 0)? -24*(day-1) : 0);
+    
+    // go back 51 weeks (places you at second cell in the top row)
+    cur.setHours(-24 * 51 * 7);
+    
+    var foldername = "swag" + parseInt(Math.random()*100000);
+    var sh = "#!/bin/bash\n#\n# Name this file swaggen.sh\n# Run these commands:\n#\tchmod +x swaggen.sh\n#\t./swaggen.sh\n#\n# The result will be in the "+foldername+" folder in the current directory.\n\n"
+    sh += "mkdir " + foldername + "\ncd " + foldername + "\ngit init\n";
+    sh += "echo 'This project was generated using [github-grid](https://github.com/cciollaro/github-grid/).' > README.md\ngit add README.md\n";
+    
+    for (var x=0; x<grid[0].length; x++)
+        for (var y=0; y<grid.length; y++)
+        {
+            var value = grid[y][x];
+            var thisdate = cur.toISOString();
+            for (var z=0; z<value; z++)
+            {
+                sh += "echo '" + Math.random()*1000000 + "' > vanity\ngit add vanity\n";
+                sh += "GIT_COMMITTER_DATE=\""+ cur.toString() +"\" git commit -m \""+Math.random()*1000000+"\" --date \""+ cur.toString() + "\"\n"
+            }
+            
+            cur.setHours(24);
+        }
+    
+    sh = btoa(sh);
+    
+    $("#downloaddiv").html("<a id='downlink' download='swaggen.sh' href='data:text/x-bsh;base64,"+sh+"'>download</a>");
+    
+    actuateLink(document.getElementById("downlink"));
+    
+}
+
+function actuateLink(link)
+{
+    var allowDefaultAction = true;
+    
+    if (link.click)
+    {
+        link.click();
+        return;
+    }
+    else if (document.createEvent)
+    {
+        var e = document.createEvent('MouseEvents');
+        e.initEvent(
+                    'click'     // event type
+                    ,true      // can bubble?
+                    ,true      // cancelable?
+                    );
+        allowDefaultAction = link.dispatchEvent(e);
+    }
+    
+    if (allowDefaultAction)
+    {
+        var f = document.createElement('form');
+        f.action = link.href;
+        document.body.appendChild(f);
+        f.submit();
+    }
+}
+
 $("#imgInp").change(function(){
                     readURL(this);
                     });

@@ -11,7 +11,7 @@
             <br />
             <button onclick="$('.debug').toggle()">Toggle Debug</button>
             <button onclick="$('#imgInp').click()">Upload Image</button>
-            <button onclick="alert('noop')">Export as Script</button>
+            <button onclick="exportScript()">Export as Script</button>
             <br />
             
             <div id="description">
@@ -39,6 +39,10 @@
             </form>
             <canvas id="imageprev">
                 </canvas>
+        </div>
+        
+        <div id="downloaddiv" hidden>
+            
         </div>
         
         </div>
