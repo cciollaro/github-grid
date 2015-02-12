@@ -65,6 +65,50 @@ function updateVariables(){
     }
 }
 
+function loadHistory()
+{
+    // prompt for the user's github username
+    var username = prompt("What is your Github username?");
+    
+    // fetch it with yql
+    $.getJSON("http://query.yahooapis.com/v1/public/yql",
+      {
+        q:      "select * from xml where url=\"https://github.com/users/"+username+"/contributions\"",
+        format: "json"
+      },
+      function(data){
+        var contribs = data.query.results.svg.g.g;
+        
+        // to keep track of the darkest spot
+        var max_commits = 0;
+        
+        // these colors correspond to the 0 - 4 values
+        var colors = ["#eeeeee", "#d6e685", "#8cc665", "#44a340", "#1e6823"];
+        
+        for (var x in contribs)
+        {
+            var week = contribs[x].rect;
+            
+            for (var y in week)
+            {
+                var day = week[y];
+                
+                // update max if necessary
+                if (parseInt(day["data-count"]) > max_commits)
+                    max_commits = parseInt(day["data-count"]);
+                            
+                // draw it on our grid
+                grid[y][x] = colors.indexOf(day["fill"]);
+            }
+        }
+        
+        console.log(max_commits);
+        drawBoard();
+        
+      }
+    );
+}
+
 function drawBoard(){
     for (var x = 0; x <= bw; x += ss) {
         context.moveTo(0.5 + x, 0);

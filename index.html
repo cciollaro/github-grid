@@ -10,6 +10,7 @@
             <canvas id="canvas"></canvas>
             <br />
             <button onclick="$('.debug').toggle()">Toggle Debug</button>
+            <button onclick="loadHistory()">Load History</button>
             <button onclick="$('#imgInp').click()">Upload Image</button>
             <button onclick="exportScript()">Export as Script</button>
             <br />
@@ -24,9 +25,9 @@
             </div>
         
         <div class="debug">
-            <label for="cols">Columns: </label><input name="cols" type="number" value="50" />
+            <label for="cols">Columns: </label><input name="cols" type="number" value="53" />
             <label for="rows">Rows: </label><input name="rows" type="number" value="7" />
-            <label for="ss">Square Size: </label><input name="ss" type="number" value="15" />
+            <label for="ss">Square Size: </label><input name="ss" type="number" value="12" />
             <textarea class="debug" name="result" wrap="hard"></textarea>
             <br />&nbsp;
         </div>
