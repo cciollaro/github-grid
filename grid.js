@@ -9,6 +9,9 @@ var ss = parseInt($('input[name="ss"]').val());
 var bw = ss*cols;
 var bh = ss*rows;
 
+// the number of commits to do on the darkest day
+var max_value = 10;
+
 var dragging = false;
 var lastRow = lastCol = -1;
 
@@ -270,8 +273,11 @@ function exportScript()
     // go to sunday
     cur.setHours((day != 0)? -24*(day-1) : 0);
     
-    // go back 51 weeks (places you at second cell in the top row)
-    cur.setHours(-24 * 51 * 7);
+    // go to 7am
+    cur.setHours(7,0,0,0);
+    
+    // go back 52 weeks (places you at first cell in the top row)
+    cur.setHours(-24 * 52 * 7 - 24);
     
     var foldername = "vanity" + parseInt(Math.random()*100000);
     var sh = "#!/bin/bash\n#\n# Name this file vanitygen.sh\n# Run these commands:\n#\tchmod +x vanitygen.sh\n#\t./vanitygen.sh\n#\n# The result will be in the "+foldername+" folder in the current directory.\n\n"
@@ -281,7 +287,7 @@ function exportScript()
     for (var x=0; x<grid[0].length; x++)
         for (var y=0; y<grid.length; y++)
         {
-            var value = grid[y][x];
+            var value = parseInt(max_value*(grid[y][x]/4.0) - (0 < grid[y][x] < 4));
             var thisdate = cur.toISOString();
             for (var z=0; z<value; z++)
             {
