@@ -229,8 +229,8 @@ function exportScript()
     // go back 51 weeks (places you at second cell in the top row)
     cur.setHours(-24 * 51 * 7);
     
-    var foldername = "swag" + parseInt(Math.random()*100000);
-    var sh = "#!/bin/bash\n#\n# Name this file swaggen.sh\n# Run these commands:\n#\tchmod +x swaggen.sh\n#\t./swaggen.sh\n#\n# The result will be in the "+foldername+" folder in the current directory.\n\n"
+    var foldername = "vanity" + parseInt(Math.random()*100000);
+    var sh = "#!/bin/bash\n#\n# Name this file vanitygen.sh\n# Run these commands:\n#\tchmod +x vanitygen.sh\n#\t./vanitygen.sh\n#\n# The result will be in the "+foldername+" folder in the current directory.\n\n"
     sh += "mkdir " + foldername + "\ncd " + foldername + "\ngit init\n";
     sh += "echo 'This project was generated using [github-grid](https://github.com/cciollaro/github-grid/).' > README.md\ngit add README.md\n";
     
@@ -250,7 +250,7 @@ function exportScript()
     
     sh = btoa(sh);
     
-    $("#downloaddiv").html("<a id='downlink' download='swaggen.sh' href='data:text/x-bsh;base64,"+sh+"'>download</a>");
+    $("#downloaddiv").html("<a id='downlink' download='vanitygen.sh' href='data:text/x-bsh;base64,"+sh+"'>download</a>");
     
     actuateLink(document.getElementById("downlink"));
     
