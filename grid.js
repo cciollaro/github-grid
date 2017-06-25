@@ -38,7 +38,6 @@ function doItAll(){
     updateVariables();
     drawBoard();
     writeGridToTextarea();
-    fillBoardFromGrid();
 }
 
 function updateVariables(){
@@ -86,9 +85,10 @@ function loadHistory()
         var max_commits = 0;
         
         // these colors correspond to the 0 - 4 values
-        var colors = ["#eeeeee", "#d6e685", "#8cc665", "#44a340", "#1e6823"];
+        var colors = ["#ebedf0", "#c6e48b", "#7bc96f", "#239a3b", "#196127"];
+        var seenColors = new Set();
         
-        for (var x in contribs)
+        for (var x = 0; x <= 52; x++)
         {
             var week = contribs[x].rect;
             
@@ -101,11 +101,13 @@ function loadHistory()
                     max_commits = parseInt(day["data-count"]);
                             
                 // draw it on our grid
+                seenColors.add(day["fill"]);
                 grid[y][x] = colors.indexOf(day["fill"]);
             }
         }
         
         console.log(max_commits);
+        console.log(seenColors);
         drawBoard();
         
       }
@@ -183,16 +185,18 @@ function writeGridToTextarea(){
 //presumably this should be something dynamic
 function calculateFillStyle(x){
     if(x == 0)
-        return "#eee";
+        return "#ebedf0";
     else if(x == 1)
-        return "#d6e685";
+        return "#c6e48b";
     else if(x == 2)
-        return "#8cc665";
+        return "#7bc96f";
     else if(x == 3)
-        return "#44a340";
+        return "#239a3b";
     else
-        return "#1e6823";
+        return "#196127";
 }
+
+
 
 // there is probably a neater way to do this... makes sure that
 // when the drag event click event fires after a drag the cell doesn't
